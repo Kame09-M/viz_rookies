@@ -23,9 +23,11 @@ for fname, category in files:
     for i in range(7, 67):
         col_headers.append((gender_row[i], age_row[i]))
 
-    # データは行7（index 6）以降
+    # データは行7（index 6）以降、国籍コード60000（移動者）のみ
     for row in rows[6:]:
         if row[6] is None:
+            continue
+        if row[1] != 60000:  # 国籍コード: 60000=移動者のみ残す
             continue
         prefecture = row[6]
         year = row[4]
@@ -44,7 +46,7 @@ for fname, category in files:
     wb.close()
     print(f'{fname}: 処理完了')
 
-output_file = 'idou_tableau.csv'
+output_file = 'idou_tableau_v2.csv'
 with open(output_file, 'w', newline='', encoding='utf-8') as f:
     fieldnames = ['種別', '都道府県', '年次', '性別', '年齢階級', '人数']
     writer = csv.DictWriter(f, fieldnames=fieldnames)
